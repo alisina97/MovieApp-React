@@ -4,13 +4,14 @@ import { Paper } from '@mui/material'
 import './Hero.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCirclePlay } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom'
 
 function Hero({movies}) {
   return (
     <div>
         <Carousel>
             {
-                movies.map((movie) =>{
+                movies?.map((movie) =>{
                     return(
                         <Paper>
                             <div className='movie-card-container'>
@@ -23,11 +24,13 @@ function Hero({movies}) {
                                             <h4>{movie.title}</h4>
                                         </div>
                                         <div className='movie-button-container'>
-                                            <div className='play-button-icon-container'>
-                                                <FontAwesomeIcon className='play-button-icon'
-                                                    icon={faCirclePlay}
-                                                />
-                                            </div>
+                                            <Link to={`/Trailer/${movie.trailerLink.substring(movie.trailerLink.length - 11)}`}>
+                                                <div className='play-button-icon-container'>
+                                                    <FontAwesomeIcon className='play-button-icon'
+                                                        icon={faCirclePlay}
+                                                    />
+                                                </div>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
