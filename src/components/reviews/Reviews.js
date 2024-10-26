@@ -1,35 +1,44 @@
-import React, { useEffect, useRef } from 'react'
-import { Col, Container, Row } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
-import ReviewForm from '../reviewForm/reviewForm';
+import {useEffect, useRef} from 'react';
 import api from '../../api/axiosConfig';
+import {useParams} from 'react-router-dom';
+import {Container, Row, Col} from 'react-bootstrap';
+import ReviewForm from '../reviewForm/ReviewForm';
 
-function Reviews({getMovieData, movie, reviews, setReviews}) {
+import React from 'react'
+
+const Reviews = ({getMovieData,movie,reviews,setReviews}) => {
+
     const revText = useRef();
     let params = useParams();
     const movieId = params.movieId;
 
-    useEffect(() => {
+    useEffect(()=>{
         getMovieData(movieId);
-
     },[])
 
-    const addReview = async (e) => {
+    const addReview = async (e) =>{
         e.preventDefault();
+
         const rev = revText.current;
 
-        try {
+        try
+        {
+            const response = await api.post("/api/v1/reviews",{reviewBody:rev.value,imdbId:movieId});
 
-            const response = await api.post("api/v1/reviews", {reviewBody:rev.value, ImdbId:movieId});
-
-            const updateReviews = [...reviews, {body:rev.value}];
-
+            const updatedReviews = [...reviews, {body:rev.value}];
+    
             rev.value = "";
-
-            setReviews(updateReviews);
-        } catch(e) {
-            console.log(e);
+    
+            setReviews(updatedReviews);
         }
+        catch(err)
+        {
+            console.error(err);
+        }
+        
+
+
+
     }
 
   return (
@@ -37,45 +46,48 @@ function Reviews({getMovieData, movie, reviews, setReviews}) {
         <Row>
             <Col><h3>Reviews</h3></Col>
         </Row>
-        <Row className='mt-2'>
+        <Row className="mt-2">
             <Col>
-                <img src='movie?.poster' alt='' />
+                <img src={movie?.poster} alt="" />
             </Col>
             <Col>
-            {
-                <>
-                    <Row>
-                        <Col>
-                            <ReviewForm handleSubmit={addReview} revText={revText} labelText="write a review?" />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <hr />
-                        </Col>
-                    </Row>
-                </>
-            }
-            {
-                reviews?.map((r) => {
-                    return(
-                        <>
-                            <Row>
-                                <Col>
-                                    {r.body}
-                                </Col>
-                            </Row>
-                        </>
-                    )
-                })
-            }
+                {
+                    <>
+                        <Row>
+                            <Col>
+                                <ReviewForm handleSubmit={addReview} revText={revText} labelText = "Write a Review?" />  
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <hr />
+                            </Col>
+                        </Row>
+                    </>
+                }
+                {
+                    reviews?.map((r) => {
+                        return(
+                            <>
+                                <Row>
+                                    <Col>{r.body}</Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <hr />
+                                    </Col>
+                                </Row>                                
+                            </>
+                        )
+                    })
+                }
             </Col>
         </Row>
         <Row>
             <Col>
                 <hr />
             </Col>
-        </Row>
+        </Row>        
     </Container>
   )
 }

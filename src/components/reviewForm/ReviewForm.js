@@ -1,15 +1,16 @@
-import React from 'react'
-import {Form, Button, FormGroup, FormLabel, FormControl} from 'react-bootstrap'
+import {Form,Button} from 'react-bootstrap';
 
-function ReviewForm({handleSubmit, revText, labelText, defaultValue}) {
+const ReviewForm = ({handleSubmit,revText,labelText,defaultValue}) => {
   return (
+
     <Form>
-        <FormGroup className='b-3' controlId='exampleForm.controlTextarea1'>
-            <FormLabel> {labelText}</FormLabel>
-            <FormControl ref={revText} as="textarea" rows={3} defaultValue={defaultValue} />
-        </FormGroup>
-        <Button variant='outline-info' onClick={handleSubmit}>Submit</Button>
-    </Form>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+            <Form.Label>{labelText}</Form.Label>
+            <Form.Control ref={revText} as="textarea" rows={3} defaultValue={defaultValue} />
+        </Form.Group>
+        <Button variant="outline-info" onClick={handleSubmit}>Submit</Button>
+    </Form>   
+
   )
 }
 
